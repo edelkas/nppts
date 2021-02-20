@@ -1,0 +1,73 @@
+\\ --- BACKEND
+
+* Add a function to reset blocks and scores, maybe use it when loading fails
+  or when the downloading is incomplete.
+* Test doing multiple downloads and loads on the same session.
+* When saving scores, add personal player id to the header so we know who
+  it belongs to when we load that scores file.
+* Don't reset scores when redownloading, instead give warning if user tries to
+  save scores because they may be inaccurate.
+* Pause downloading when sorting of the main table is taking place to prevent
+  an update from happening between the sorting and the updating of the
+  pointers to the block copies.
+* When downloading, sort tied scores by replay_id to have correct tie
+  ordering.
+* Remove all "private" functions from the header file, only the public ones
+  that need to be accessed from other files should be here.
+* Finish parse_json, read TODOs there, specially fill player's scores array.
+* Add function "add_player" that takes care of reallocating if necessary.
+  Use it in parse_config, as well as parse_json.
+* CONFIG: Design config file format, parse it on parse_config and only use
+  the default values if there's no valid config file.
+* CONFIG: Finish config dialog, with a list of hackers and cheater where the
+  user can specify both the name and the ID (both being optional). When it
+  comes to dealing with them, there are 5 degrees of severity:
+  - Remove them.
+  - Don't remove them, but ignore them everywhere.
+  - Don't remove them, but ignore them in the rankings and highlight elsewhere.
+  - Don't remove them, don't ignore them, but highlight their names in red.
+  - Do nothing at all.
+* Make a prealloc to reallocate players if PLAYER_MAX is surpassed.
+* Enclose all loggings in mutexes, since they can be accessed by multiple
+  threads.
+* Implement refreshing (updating of main table and highscoring stats
+  when the boolean is set, e.g., periodically during download, so things
+  appear as they get generated (this will involve copying from blocks_raw
+  to blocks and reordering).
+* Parse blocks from other modes: HC as online, and coop and race as offline.
+* Parse challenge info (need the "codes" files from the game).
+* For rankings, display all instead of just top20, scrollable.
+* Use clipper for the main table, and all other tables,
+  to avoid computing it entirely each frame.
+* Don't perform tasks on every frame (like calculating the rankings),
+  obviously. Instead, calculate them the first required frame, and then
+  store the result in a variable for each thing that needs to be
+  displayed (one of the table, etc). Update this variable
+* Parse Steam ID from savefile itself, and if not found, ask the player (is the
+  ID in the nprofile?)
+* To prevent players from faking and using the Steam ID's of others,
+  parse the metanet_id of the player from the received JSON file, and
+  incorporate it in the security string that contains the total scores.
+* Add cURL source to make the compilation process standalone, like cJSON.
+
+\\ --- FRONTEND
+
+* Add a player select option for the individual stat tables, as well as
+  in the lists of the global stats.
+* Add the option to click on a leaderboard entry to obtain the stats for
+  that player. Maybe do the same for the other tables.
+* Also include ranks over 19 in the main table.
+* 5th column in main table options called "Other filters" which has:
+  - Checkbox for highscores, non-highscores, and non-scores.
+  - Filter by rank.
+  - Option to include non-highscores in avg. defaulting to false.
+* Automatically scroll log window to the end.
+* Add status next to download bar ("downloading", "idle", "finished", etc).
+  Maybe with a little icon (e.g. red/green circle).
+* Center level id in leaderboard label.
+* When an entry in the main table is clicked, maybe select it.
+* Make footer columns the same width as main table.
+* Fix RangeInt not working.
+* The global highscoring part is slightly shifted downwards.
+* Add tabs or comboboxes to choose what to plot.
+* Check how to disable widgets.
